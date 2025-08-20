@@ -1,0 +1,235 @@
+<!doctype html>
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Nethome– Dashboard</title>
+  <style>
+    :root{
+      --bg:#0b0f17;              /* page background */
+      --card:#0f1420;            /* card background */
+      --accent:#1dd1a1;          /* primary accent */
+      --accent-2:#2dd4bf;        /* secondary accent */
+      --text:#eaf0ff;            /* main text */
+      --muted:#93a2b8;           /* muted text */
+      --chip:#0c3840;            /* pill background */
+      --warning:#ffd166;         /* banner */
+      --success:#22c55e;         /* success */
+      --danger:#ef4444;          /* danger */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 12px;
+      --gap: 14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b0f17,#0a0d15 40%,#0c101c);color:var(--text);font:15px/1.35 "Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+    .app{width:100%px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}/* Top status / header */
+.status{display:flex;align-items:center;gap:10px;padding:14px 16px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#13223a url('') center/cover no-repeat;border:1px solid #1f2b44}
+.banner{flex:1;background:rgba(255,209,102,.12);color:#ffe08a;border:1px solid rgba(255,209,102,.35);padding:10px 12px;border-radius:999px;display:flex;align-items:center;gap:8px}
+.circle{width:20px;height:20px;border-radius:50%;display:inline-grid;place-items:center;background:rgba(255,209,102,.25)}
+.icon{width:18px;height:18px;display:inline-block}
+.help{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#121a2b;border:1px solid #1f2b44}
+
+/* Wallet card */
+.wallet{position:relative;margin:6px 16px 0;background:radial-gradient(120% 120% at 0% 0%,#0e223a 0%,#0a1323 60%,#091226 100%);border-radius:var(--radius-xl);padding:18px;box-shadow:var(--shadow);overflow:hidden}
+.wallet::after{content:"";position:absolute;inset:-40% -60% auto auto;background:conic-gradient(from 260deg at 60% 40%,transparent,rgba(255,255,255,.08),transparent 40%);filter:blur(6px);height:220px;width:220px;border-radius:50%}
+.brand{display:flex;align-items:center;gap:8px;opacity:.95}
+.brand .dot{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#00b4d8,#0077b6)}
+.brand b{letter-spacing:.2px}
+
+.balance-row{display:flex;align-items:end;gap:10px;margin:16px 0 10px}
+.money{font-size:36px;font-weight:800;letter-spacing:.3px}
+.coins{opacity:.75;font-weight:600}
+
+.wallet-actions{display:flex;gap:10px;margin:12px 0 16px}
+.chip{padding:10px 12px;border-radius:999px;background:var(--chip);border:1px solid rgba(45,212,191,.25);display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.chip .pill{font-size:12px;background:rgba(34,197,94,.15);color:#86efac;padding:2px 8px;border-radius:999px;border:1px solid rgba(34,197,94,.4)}
+
+.cta-row{display:flex;gap:10px}
+.cta{flex:1;background:#0d192d;border:1px solid #1f2b44;border-radius:var(--radius-md);padding:14px 12px;display:flex;align-items:center;gap:10px}
+.cta .badge{background:rgba(29,209,161,.15);color:#80f7da;border:1px solid rgba(29,209,161,.35);padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+
+.month-row{margin-top:6px;background:rgba(13,25,45,.8);border:1px solid #1f2b44;border-radius:var(--radius-lg);padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.month-row small{color:var(--muted)}
+.arrow{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#11203a;border:1px solid #1f2b44}
+
+/* Section */
+.section{background:linear-gradient(180deg,#0a0f1b,#0b111f);margin-top:18px;border-top-left-radius:24px;border-top-right-radius:24px;padding:18px 16px 120px;border:1px solid #111827;border-bottom:0}
+.section h3{margin:4px 0 14px;font-size:20px}
+.section .seeall{margin-left:auto;padding:10px 14px;border-radius:999px;background:#0f182b;border:1px solid #1f2b44;color:#c7d2fe;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tile{background:#0f182b;border:1px solid #1f2b44;border-radius:16px;padding:12px;text-align:center}
+.tile .iwrap{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin:0 auto 8px;background:#0e2638;border:1px solid #1f2b44}
+.badge-free{position:absolute;transform:translate(-8px,-8px);padding:2px 8px;border-radius:999px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:#86efac;font-size:11px;font-weight:800}
+
+/* Floating QR button */
+.qris{position:fixed;inset:auto 0 18px;display:grid;place-items:center}
+.qris .btn{width:210px;height:64px;border-radius:999px;background:#1a3b2f;border:1px solid #244f40;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.qris .btn span{font-weight:900;letter-spacing:.8px}
+
+/* Bottom nav */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:min(480px,100%);display:flex;justify-content:space-between;padding:10px 28px}
+.nav .item{color:#93a2b8;text-align:center;font-size:12px}
+.nav .item.active{color:#eaf0ff}
+
+/* Helpers */
+.row{display:flex;align-items:center;gap:12px}
+.spacer{flex:1}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+button{color:inherit}
+
+  </style>
+</head>
+<body>
+  <div class="app" id="app"><!-- STATUS / HEADER -->
+<header class="status">
+  <div class="avatar" aria-label="logo"></div>
+  <div class="banner">
+    <span class="circle" aria-hidden>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    </span>
+    <span class="muted">Layanan</span>
+  </div>
+  <button class="help" aria-label="Bantuan">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+  </button>
+</header>
+
+<!-- WALLET CARD -->
+<section class="wallet">
+  <div class="brand">
+    <span class="dot"></span>
+    <b>My Nethome</b>
+    <button id="toggleEye" class="help" style="width:32px;height:32px;margin-left:auto"><span class="sr">Lihat/Hidden saldo</span>
+      <svg class="icon" id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="balance-row">
+    <div class="money" id="balance">Rp0</div>
+    <div class="spacer"></div>
+    <div class="coins muted">Coins 0</div>
+  </div>
+
+  <div class="wallet-actions">
+    <div class="chip"><span class="pill">Reguler</span>Bayar</div>
+    <div class="chip"><span class="pill">Smart</span>Bayar</div>
+    <div class="chip"><span class="pill">Great</span>Bayar</div>
+  </div>
+
+  <div class="cta-row">
+    <div class="cta">
+      <div class="badge">Paket</div>
+      <div>
+        <div><b>Internet</b></div>
+        <small class="muted">Smart Tv</small>
+      </div>
+    </div>
+    <div class="cta">
+      <div class="badge">Paket</div>
+      <div>
+        <div><b>Internet</b></div>
+        <small class="muted">Smart Tv</small>
+      <small class="muted">CCTV online</small></div>
+    </div>
+  </div>
+
+  <div class="month-row">
+    <small><b>Rp0</b> sudah terpakai di Agustus</small>
+    <div class="arrow">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: KIRIM & TERIMA -->
+<section class="section">
+  <div class="row">
+    <h3>Kirim & terima</h3>
+    <div class="spacer"></div>
+    <button class="seeall">
+      Lihat semua
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <div style="background:#0f182b;border:1px solid #1f2b44;border-radius:18px;padding:14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+    <div style="position:relative">
+      <div class="iwrap"></div>
+      <span class="badge-free">Gratis</span>
+    </div>
+    <div style="font-weight:700"></div>
+  </div>
+
+  <div class="grid-4">
+    <div class="tile">
+      <div class="iwrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2"/><path d="M5 9l-3 3 3 3"/></svg>
+      </div>
+      <div>Transfer<br><span class="muted">gratis</span></div>
+    </div>
+    <div class="tile">
+      <div class="iwrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M18 9H6"/></svg>
+      </div>
+      <div>Minta</div>
+    </div>
+    <div class="tile">
+      <div class="iwrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15H3"/><path d="M19 7H5"/></svg>
+      </div>
+      <div>Split bill</div>
+    </div>
+    <div class="tile">
+      <div class="iwrap">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+      </div>
+      <div>Hadiah</div>
+    </div>
+  </div>
+</section>
+
+<!-- Floating QRIS button -->
+<div class="qris" aria-live="polite">
+  <button class="btn" id="qrisBtn">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h7v7h-7z"/></svg>
+    <span>QRIS</span>
+  </button>
+</div>
+
+<!-- Bottom nav (ghost) -->
+<nav class="nav" aria-label="Navigasi bawah">
+  <div class="item active">Beranda</div>
+  <div class="item">Bayar</div>
+  <div class="item">Riwayat</div>
+  <div class="item">Akun</div>
+</nav>
+
+  </div>  <script>
+    // Demo interaksi: hide/show saldo & tombol QRIS
+    const eye = document.getElementById('toggleEye');
+    const icon = document.getElementById('eyeIcon');
+    const bal = document.getElementById('balance');
+    let hidden = false;
+    eye.addEventListener('click', ()=>{
+      hidden = !hidden;
+      bal.textContent = hidden ? '•••••' : 'Rp0';
+      icon.innerHTML = hidden
+        ? '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.87 21.87 0 0 1 5.06-6.06M9.9 4.24A10.62 10.62 0 0 1 12 4c7 0 11 8 11 8a21.83 21.83 0 0 1-5.1 6.1"/><path d="M1 1l22 22"/>'
+        : '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/>';
+    });
+
+    document.getElementById('qrisBtn').addEventListener('click',()=>{
+      alert('Buka pemindaian QRIS (demo)');
+    });
+  </script></body>
+</html>
